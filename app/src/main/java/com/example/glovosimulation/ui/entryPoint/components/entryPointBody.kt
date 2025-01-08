@@ -46,7 +46,7 @@ fun EntryPointBody(modifier : Modifier = Modifier){
         Row(modifier = Modifier.fillMaxWidth().padding(end = 2.dp).alpha(0.6f), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Box(modifier = Modifier
                 .size(30.dp)
-                .myShape("right")) {
+                .myShape("right", 0.75f, 0xFFEEEEEE)) {
                 Image(imageVector = Icons.Outlined.Person, contentDescription = "", modifier = Modifier.align(Alignment.Center).size(18.dp))
             }
             Card(modifier = Modifier.padding(start = 0.dp).size(250.dp,30.dp),
@@ -66,7 +66,7 @@ fun EntryPointBody(modifier : Modifier = Modifier){
             }
             Box(modifier = Modifier
                 .size(30.dp)
-                .myShape("left")
+                .myShape("left", 0.75f, 0xFFEEEEEE)
                 .padding(start = 8.65.dp).padding(top = 6.dp)) {
                 Image(imageVector = Icons.Outlined.Settings, contentDescription = "", modifier = Modifier.size(18.dp))
             }
@@ -75,6 +75,18 @@ fun EntryPointBody(modifier : Modifier = Modifier){
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp),
             modifier = Modifier.padding(vertical = 16.dp))
     }
+
+    Box(
+        modifier = modifier.fillMaxSize().padding(bottom = 20.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        centerBodyContent(circleDistance = 120.dp,
+            centerCircleSize = 115.dp,
+            outerCircleSize = 100.dp,
+            centerCircleColor = 0xFFFFFFFF,
+            outerCircleColor = 0xFFFFFFFF)
+    }
+
     bottomScrollable()
 }
 

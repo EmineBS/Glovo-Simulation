@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -19,10 +20,14 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.graphics.shapes.CornerRounding
 import androidx.graphics.shapes.RoundedPolygon
 import androidx.graphics.shapes.Morph
 import androidx.graphics.shapes.toPath
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 private val DarkColorScheme = darkColorScheme(
@@ -71,7 +76,7 @@ fun GlovoSimulationTheme(
     )
 }
 
-fun Modifier.myShape(direction: String): Modifier {
+fun Modifier.myShape(direction: String, morphing: Float, color: Long): Modifier {
     return this.then(
         Modifier.drawWithCache {
             val triangle = RoundedPolygon(
@@ -91,15 +96,15 @@ fun Modifier.myShape(direction: String): Modifier {
                 centerY = size.height / 2f
             )
             val morph = Morph(start = triangle, end = circle)
-            val morphPath = morph.toPath(progress = 0.75f).asComposePath() // Adjust progress to get a closer morph
+            val morphPath = morph.toPath(progress = morphing).asComposePath() // Adjust progress to get a closer morph
 
             onDrawBehind {
                 if (direction.equals("right", ignoreCase = true)) {
-                    drawPath(morphPath, color = Color(0xFFEEEEEE)) // Use a grey color
+                    drawPath(morphPath, color = Color(color)) // Use a grey color
                 } else {
                     translate(left = size.width - morphPath.getBounds().width) { // Adjust translation to maintain position
                         scale(scaleX = -1f, scaleY = 1f) { // Flip horizontally
-                            drawPath(morphPath, color = Color(0xFFEEEEEE)) // Use a grey color
+                            drawPath(morphPath, color = Color(color)) // Use a grey color
                         }
                     }
                 }
@@ -135,3 +140,14 @@ fun Modifier.curvedTopShape(
         color = backgroundColor
     )
 }
+
+fun Modifier.circularPosition(
+    radius: Dp,
+    angle: Float,
+    offsetY: Dp = 0.dp
+): Modifier = this.then(
+    Modifier.offset(
+        x = (radius * cos(angle)),
+        y = (radius * sin(angle)) + offsetY
+    )
+)
