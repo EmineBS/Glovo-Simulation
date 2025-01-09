@@ -1,4 +1,4 @@
-package com.example.glovosimulation.ui.entryPoint
+package com.example.glovosimulation.ui.particularScreens.packageDelivery
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,11 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.glovosimulation.ui.entryPoint.components.EntryPointBody
-import com.example.glovosimulation.ui.particularScreens.Profile.ProfileActivity
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 
 @Composable
-fun EntryPointActivity() {
+fun PackageDeliveryActivity() {
     Scaffold(
         //topBar = { EntryPointTopBar() } ,
         content = { innerPadding ->
@@ -23,8 +22,7 @@ fun EntryPointActivity() {
                     .padding(innerPadding)
                     .background(color = Color(0xFFFFB84D))
                     .fillMaxSize()) {
-                        //EntryPointBody()
-                ProfileActivity()
+                //EntryPointBody()
             }
         }
     )
@@ -34,6 +32,6 @@ fun EntryPointActivity() {
 @Composable
 fun Preview() {
     GlovoSimulationTheme {
-        EntryPointActivity()
+        PackageDeliveryActivity()
     }
 }

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -67,8 +68,8 @@ fun EntryPointBody(modifier : Modifier = Modifier){
             Box(modifier = Modifier
                 .size(30.dp)
                 .myShape("left", 0.75f, 0xFFEEEEEE)
-                .padding(start = 8.65.dp).padding(top = 6.dp)) {
-                Image(imageVector = Icons.Outlined.Settings, contentDescription = "", modifier = Modifier.size(18.dp))
+                .padding(start = 7.5.dp).padding(top = 6.dp)) {
+                Image(imageVector = Icons.Outlined.Share, contentDescription = "", modifier = Modifier.size(18.dp))
             }
         }
         Text("Alameda de Capuchinos, 66",
