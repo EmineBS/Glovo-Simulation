@@ -14,7 +14,7 @@ import com.example.glovosimulation.ui.particularScreens.Profile.ProfileActivity
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 
 @Composable
-fun EntryPointActivity() {
+fun EntryPointActivity(navigateToProfile:() -> Unit) {
     Scaffold(
         //topBar = { EntryPointTopBar() } ,
         content = { innerPadding ->
@@ -23,8 +23,7 @@ fun EntryPointActivity() {
                     .padding(innerPadding)
                     .background(color = Color(0xFFFFB84D))
                     .fillMaxSize()) {
-                        //EntryPointBody()
-                ProfileActivity()
+                        EntryPointBody(NavigateToProfile = navigateToProfile)
             }
         }
     )
@@ -34,6 +33,6 @@ fun EntryPointActivity() {
 @Composable
 fun Preview() {
     GlovoSimulationTheme {
-        EntryPointActivity()
+        EntryPointActivity(navigateToProfile = {})
     }
 }

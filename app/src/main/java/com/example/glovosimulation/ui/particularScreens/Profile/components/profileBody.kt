@@ -3,6 +3,7 @@ package com.example.glovosimulation.ui.particularScreens.Profile.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,7 +52,7 @@ import androidx.compose.ui.unit.sp
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 
 @Composable
-fun ProfileBody() {
+fun ProfileBody(NavigateBack:() -> Unit) {
     val initialDraggingHeight = 145.dp
     val maxDraggingHeight = 60.dp
 
@@ -65,7 +66,7 @@ fun ProfileBody() {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()) {
-            Image(imageVector = Icons.Default.Close, contentDescription = "", Modifier.size(30.dp))
+            Image(imageVector = Icons.Default.Close, contentDescription = "", Modifier.size(30.dp).clickable { NavigateBack() })
             Box(modifier = Modifier
                 .size(60.dp, 30.dp)
                 .background(color = Color(0xFF309E92), shape = RoundedCornerShape(20.dp))
@@ -188,6 +189,6 @@ fun ProfileBody() {
 @Composable
 fun Preview() {
     GlovoSimulationTheme {
-        ProfileBody()
+        ProfileBody(NavigateBack = {})
     }
 }
