@@ -1,0 +1,93 @@
+{
+  ConstraintSets: {
+    // Expanded
+    start: {
+      topBar: {
+        width: 'parent',
+        height: 84,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent','top']
+      },
+      title: {
+        start: ['parent', 'start', 12],
+        top: ['topBar','bottom'],
+        custom: {
+          alpha: 1.0
+        }
+      },
+      searchBar: {
+        width: 'parent',
+        height: 56,
+        start: ['parent', 'start', 16],
+        end: ['parent', 'end', 16],
+        top: ['title','bottom', 24],
+      },
+      DataContent: {
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['searchBar','bottom', 48],
+        //bottom: ['parent','bottom']
+      },
+      searchProperties: {
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['DataContent','top', 84],
+        height: 36
+      }
+    },
+    // Collapsed
+    end: {
+      topBar: {
+        width: 'parent',
+        height: 84,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent','top']
+      },
+      title: {
+        start: ['parent', 'start', 12],
+        top: ['topBar','bottom'],
+        custom: {
+          alpha: 0.0
+        }
+      },
+      searchBar: {
+        width: 'parent',
+        height: 30,
+        start: ['parent', 'start', 56],
+        end: ['parent', 'end', 92],
+        top: ['topBar','top', 12],
+      },
+      DataContent: {
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent','top'],
+        //bottom: ['parent','bottom']
+      },
+      searchProperties: {
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['topBar','bottom'],
+        height: 36
+      },
+    },
+
+    Transitions: {
+      default: {
+        from: 'start',
+        to: 'end',
+        pathMotionArc: 'startHorizontal',
+        KeyFrames: {
+          KeyAttributes: [
+            {
+              target: ['searchBar'],
+              frames: [0, 50, 100],
+              translationZ: [1, 1, 1],
+            }
+          ]
+        }
+      }
+    }
+  }
+}

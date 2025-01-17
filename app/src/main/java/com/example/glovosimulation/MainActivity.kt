@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.glovosimulation.navigation.NavigationActions
+import com.example.glovosimulation.ui.commonScreens.mainShared.MainSharedScreen
 import com.example.glovosimulation.ui.entryPoint.EntryPointActivity
 import com.example.glovosimulation.ui.entryPoint.components.bottomScrollable
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
@@ -35,7 +36,8 @@ class MainActivity : ComponentActivity() {
             }
 
             GlovoSimulationTheme {
-                MainNavigation(navHostController  = navController, navigationActions = navigationActions)
+                //MainNavigation(navHostController  = navController, navigationActions = navigationActions)
+                MainSharedScreen()
             }
         }
     }
