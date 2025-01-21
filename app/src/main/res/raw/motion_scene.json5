@@ -1,5 +1,127 @@
 {
   ConstraintSets: {
+    start: {
+      header: {
+        width: 'parent',
+        height: '25%',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top']
+      },
+      arrowBack: {
+        width: 36,
+        height: 36,
+        start: ['header', 'start', 16],
+        top: ['header', 'top', 24]
+      },
+      deliveryMode: {
+        width: 72,
+        height: 36,
+        end: ['header', 'end', 16],
+        top: ['header', 'top', 24]
+      },
+      title: {
+        start: ['header', 'start', 16],
+        top: ['arrowBack', 'bottom', 16],
+        custom: {
+          alpha: 1.0
+        }
+      },
+      searchBar: {
+        width: 'parent',
+        height: 56,
+        start: ['header', 'start', 16],
+        end: ['header', 'end', 16],
+        top: ['title', 'bottom', 16],
+        custom: {
+          textSize: 20
+        }
+      },
+      body: {
+        width: 'parent',
+        height: '75%',
+        start: ['parent','start'],
+        end: ['parent', 'end'],
+        top: ['header', 'bottom'],
+      },
+      searchProperties: {
+        width: 'parent',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['header', 'bottom'],
+        visibility: 'visible'
+      }
+    },
+
+    end: {
+      header: {
+        width: 'parent',
+        height: '7.5%',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent', 'top']
+      },
+      arrowBack: {
+        width: 36,
+        height: 36,
+        start: ['header', 'start', 16],
+        top: ['header', 'top', 24]
+      },
+      deliveryMode: {
+        width: 72,
+        height: 36,
+        end: ['header', 'end', 16],
+        top: ['header', 'top', 24]
+      },
+      title: {
+        start: ['header', 'start', 16],
+        top: ['arrowBack', 'bottom', 16],
+        custom: {
+          alpha: 0.0
+        }
+      },
+      searchBar: {
+        width: 'spread',
+        height: 36,
+        start: ['arrowBack', 'end', 16],
+        end: ['deliveryMode', 'start', 16],
+        top: ['header', 'top', 24],
+        custom: {
+          textSize: 8
+        }
+      },
+      body: {
+        width: 'parent',
+        height: '92.5%',
+        start: ['parent','start'],
+        end: ['parent', 'end'],
+        top: ['header', 'bottom'],
+      },
+      searchProperties: {
+        width: 'parent',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['header', 'bottom'],
+        visibility: 'visible'
+      }
+    },
+
+    Transitions: {
+      default: {
+        from: 'start',
+        to: 'end',
+        pathMotionArc: 'startHorizontal'
+      }
+    }
+  }
+}
+
+
+/**
+{
+  ConstraintSets: {
     // Expanded
     start: {
       topBar: {
@@ -22,6 +144,9 @@
         start: ['parent', 'start', 16],
         end: ['parent', 'end', 16],
         top: ['title','bottom', 24],
+        custom: {
+          textSize: 20
+        }
       },
       DataContent: {
         start: ['parent', 'start'],
@@ -54,10 +179,13 @@
       },
       searchBar: {
         width: 'parent',
-        height: 30,
+        height: 36,
         start: ['parent', 'start', 56],
         end: ['parent', 'end', 92],
         top: ['topBar','top', 12],
+        custom: {
+          textSize: 12
+        }
       },
       DataContent: {
         start: ['parent', 'start'],
@@ -90,4 +218,4 @@
       }
     }
   }
-}
+}**/

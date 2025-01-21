@@ -72,7 +72,7 @@ fun MainSharedScreen(){
             },
             modifier = Modifier
                 .padding(horizontal = 32.dp)
-                .padding(bottom = 256.dp)
+                .padding(bottom = 36.dp)
         )
     }
 }
