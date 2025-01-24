@@ -1,5 +1,6 @@
 package com.example.glovosimulation.ui.commonScreens.mainShared
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
@@ -30,6 +31,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,34 +49,22 @@ import com.example.glovosimulation.ui.commonScreens.mainShared.components.MainSh
 import com.example.glovosimulation.ui.entryPoint.components.EntryPointBody
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainSharedScreen(){
     var progress by remember {
-        mutableStateOf(0f)
+        mutableFloatStateOf(0f)
     }
 
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        MainSharedBody(progress = progress)
-    }
+    val scrollState = rememberScrollState()
+    progress = (scrollState.value.toFloat().coerceIn(0f, 200f)/200f)
 
-    Box(contentAlignment = Alignment.BottomCenter,
+    Scaffold(
         modifier = Modifier
-        .fillMaxSize()){
-        Slider(
-            value = progress,
-            onValueChange = {
-                progress = it
-            },
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 36.dp)
-        )
-    }
+            .fillMaxSize(),
+        content = {
+            MainSharedBody(progress = progress, scrollState = scrollState)
+        })
 }
 
 @Preview(showBackground = true)
