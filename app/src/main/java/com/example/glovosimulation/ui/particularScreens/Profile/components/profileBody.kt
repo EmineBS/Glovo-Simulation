@@ -49,10 +49,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.glovosimulation.navigation.NavigationActions
+import com.example.glovosimulation.navigation.NavigationDestination
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 
 @Composable
-fun ProfileBody(NavigateBack:() -> Unit) {
+fun ProfileBody(navigationActions: NavigationActions) {
     val initialDraggingHeight = 145.dp
     val maxDraggingHeight = 60.dp
 
@@ -66,7 +69,7 @@ fun ProfileBody(NavigateBack:() -> Unit) {
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()) {
-            Image(imageVector = Icons.Default.Close, contentDescription = "", Modifier.size(30.dp).clickable { NavigateBack() })
+            Image(imageVector = Icons.Default.Close, contentDescription = "", Modifier.size(30.dp).clickable { navigationActions.navigateToEntryPoint() })
             Box(modifier = Modifier
                 .size(60.dp, 30.dp)
                 .background(color = Color(0xFF309E92), shape = RoundedCornerShape(20.dp))
@@ -182,13 +185,5 @@ fun ProfileBody(NavigateBack:() -> Unit) {
             }
             Spacer(modifier = Modifier.height(0.dp).fillMaxWidth().background(Color.Gray))
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    GlovoSimulationTheme {
-        ProfileBody(NavigateBack = {})
     }
 }

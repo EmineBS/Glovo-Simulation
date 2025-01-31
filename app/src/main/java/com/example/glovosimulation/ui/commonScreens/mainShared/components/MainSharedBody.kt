@@ -6,21 +6,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.anchoredDraggable
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -37,6 +31,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,12 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -63,17 +53,19 @@ import androidx.constraintlayout.compose.MotionScene
 import androidx.constraintlayout.compose.layoutId
 import coil3.compose.AsyncImage
 import com.example.glovosimulation.R
+import com.example.glovosimulation.navigation.NavigationActions
 
 @OptIn(ExperimentalMotionApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun MainSharedBody(progress: Float, scrollState: ScrollState){
+fun MainSharedBody(scrollState: ScrollState = rememberScrollState(), navigationActions: NavigationActions){
+    val progress by remember {
+        derivedStateOf {
+            (scrollState.value.toFloat().coerceIn(0f, 200f) / 200f)
+        }
+    }
+    val count by remember { mutableIntStateOf(10) }
 
     val context = LocalContext.current
-    val lazyListState = rememberLazyListState()
-    val firstVisibleIndex by remember {
-        derivedStateOf { lazyListState.firstVisibleItemIndex }
-    }
-
     val motionScene = remember {
         context.resources.openRawResource(R.raw.motion_scene)
             .readBytes()
@@ -87,15 +79,16 @@ fun MainSharedBody(progress: Float, scrollState: ScrollState){
             .fillMaxSize()
             .background(Color.White)
     ){
-        val titleProps = customProperties(id = "title")
-        val searchBarProps = customProperties(id = "searchBar")
+
+        val titleProps by remember { derivedStateOf { customProperties(id = "title") } }
+        val searchBarProps by remember { derivedStateOf { customProperties(id = "searchBar") } }
 
         Box(modifier = Modifier.layoutId("header").background(Color.White)){}
 
         Image(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "",
-            modifier = Modifier.layoutId("arrowBack"),
+            modifier = Modifier.layoutId("arrowBack").clickable { navigationActions.navigateToEntryPoint() },
         )
 
         Box(modifier = Modifier.layoutId("deliveryMode").background(Color.Black)){}
@@ -129,7 +122,7 @@ fun MainSharedBody(progress: Float, scrollState: ScrollState){
                     .verticalScroll(scrollState)
             ) {
                 LazyRow (horizontalArrangement = Arrangement.spacedBy(12.dp, alignment = Alignment.CenterHorizontally)) {
-                    items (10) {
+                    items (count) {
                         Box(
                             modifier = Modifier
                                 .padding(start = 16.dp)
@@ -146,8 +139,7 @@ fun MainSharedBody(progress: Float, scrollState: ScrollState){
                 }
 
                 if (progress<1) {
-                    Log.d("Scrolling", progress.toString())
-                    SearchPropertiesComposable()
+                    SearchPropertiesComposable(count = count)
                 }
                 Column () {
                     Box(
@@ -209,13 +201,12 @@ fun MainSharedBody(progress: Float, scrollState: ScrollState){
                     )
                 }
 
-                for (i in 0..20) {
+                for (i in 0..count*2) {
                     Text("$i")
                 }
             }
         }
-
-
+        
         if (progress>=1) {
             Box(
                 modifier = Modifier
@@ -223,17 +214,17 @@ fun MainSharedBody(progress: Float, scrollState: ScrollState){
                     .background(Color.LightGray)
                     .fillMaxWidth()
             ) {
-                SearchPropertiesComposable()
+                SearchPropertiesComposable(count = count)
             }
         }
     }
 }
 
 @Composable
-fun SearchPropertiesComposable(){
+fun SearchPropertiesComposable(count: Int){
     LazyRow (
         horizontalArrangement = Arrangement.spacedBy(0.dp, alignment = Alignment.CenterHorizontally),) {
-        items (10) {
+        items (count) {
             Box(
                 modifier = Modifier
                     .padding(start = 16.dp)
@@ -245,11 +236,4 @@ fun SearchPropertiesComposable(){
             }
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun SharedBodyPreview() {
-    MainSharedBody(0f, rememberScrollState())
 }

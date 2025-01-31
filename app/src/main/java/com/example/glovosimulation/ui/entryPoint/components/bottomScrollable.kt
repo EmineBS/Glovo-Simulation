@@ -1,10 +1,6 @@
 package com.example.glovosimulation.ui.entryPoint.components
 
-import android.util.Log
-import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -26,8 +22,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -38,24 +32,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.times
-import androidx.compose.ui.zIndex
 import coil3.compose.AsyncImage
 import com.example.glovosimulation.ui.theme.curvedTopShape
 import kotlinx.coroutines.launch
 
+//@Stable
 @Composable
 fun bottomScrollable() {
     val itemHeight = 50.dp
-    val spacing = 6.45.dp
-    val titleHeight = 60.dp
-    val visibleItems = 10  // Controls both initial and maximum visible items
-    val totalItems = 2
+    val spacing = 6.dp
+    val titleHeight = 57.5.dp
+    val visibleItems = 15 // Controls both initial and maximum visible items
+    val totalItems by remember { mutableIntStateOf(2) }
 
     val scope = rememberCoroutineScope()
 
@@ -68,9 +59,8 @@ fun bottomScrollable() {
     var offset by remember { mutableStateOf(initialOffset) }
     var isDragging by remember { mutableStateOf(false) }
 
-    // ----- Screen center to detect if it should snap to top or back to initial position
     val snapThreshold = (maxExpandedHeight - collapsedHeight) / 2 + 137.5.dp
-    var shouldSnapToTop = false
+    var shouldSnapToTop by remember { mutableStateOf(false) }
 
     // Handle drag release
     fun onDragEnd() {
@@ -120,22 +110,13 @@ fun bottomScrollable() {
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                items(totalItems) { index ->
+                items(totalItems) {
                     Surface(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(itemHeight+25.dp),
                         color = Color.White
                     ) {
-                        /**Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "Item $index",
-                                color = Color.Black
-                            )
-                        }**/
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp),
                             verticalAlignment = Alignment.Top,
                             modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
@@ -163,13 +144,5 @@ fun bottomScrollable() {
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomScrollablePreview() {
-    GlovoSimulationTheme {
-        bottomScrollable()
     }
 }

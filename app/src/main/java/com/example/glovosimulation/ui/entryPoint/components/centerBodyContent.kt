@@ -1,27 +1,24 @@
 package com.example.glovosimulation.ui.entryPoint.components
 
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateOffsetAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,40 +27,41 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
+import com.example.glovosimulation.navigation.NavigationActions
+import com.example.glovosimulation.navigation.NavigationDestination
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 import com.example.glovosimulation.ui.theme.circularPosition
 import com.example.glovosimulation.ui.theme.myShape
-import kotlinx.coroutines.launch
-import kotlin.math.cos
-import kotlin.math.roundToInt
-import kotlin.math.sin
 
 @Composable
-fun centerBodyContent(
-    circleDistance: Dp = 150.dp,
-    centerCircleSize: Dp = 125.dp,
+fun CenterBodyContent(
+    circleDistance: Dp = 130.dp,
+    centerCircleSize: Dp = 120.dp,
     outerCircleSize: Dp = 100.dp,
-    centerCircleColor: Long,
-    outerCircleColor: Long,
+    centerCircleColor: Long = 0xFFFFFFFF,
+    outerCircleColor: Long = 0xFFFFFFFF,
+    navigateToMainShared: () -> Unit
 ) {
-    SimpleCircularLayout(
-        modifier = Modifier.size(400.dp)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        // Center item
         CircleItem(
             imageUrl = "https://cdn-icons-png.flaticon.com/128/9425/9425772.png",
             text = "Food",
             color = centerCircleColor,
-            modifier = Modifier.size(centerCircleSize)
+            size = centerCircleSize,
+            navigateToMainShared = {navigateToMainShared()}
         )
 
         // Calculate angles for 6 items
@@ -90,28 +88,12 @@ fun centerBodyContent(
                     else -> "Shops"
                 },
                 color = outerCircleColor,
-                modifier = Modifier
-                    .size(outerCircleSize)
-                    .circularPosition(
-                        radius = circleDistance,
-                        angle = angle.toFloat()
-                    )
+                size = outerCircleSize,
+                circleDistance = circleDistance,
+                angle = angle.toFloat(),
+                navigateToMainShared = {navigateToMainShared()}
             )
         }
-    }
-}
-
-@Composable
-fun SimpleCircularLayout(
-    modifier: Modifier = Modifier,
-    radius: Dp = 150.dp,
-    content: @Composable BoxScope.() -> Unit
-) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        content()
     }
 }
 
@@ -119,8 +101,11 @@ fun SimpleCircularLayout(
 private fun CircleItem(
     text: String,
     imageUrl: String,
-    modifier: Modifier = Modifier,
-    color: Long = 0xFFFFFFFF
+    color: Long = 0xFFFFFFFF,
+    size: Dp,
+    circleDistance: Dp = 0.dp,
+    angle: Float = 0f,
+    navigateToMainShared:() -> Unit
 ) {
 
     var targetOffset by remember { mutableStateOf(Offset.Zero) }
@@ -130,44 +115,40 @@ private fun CircleItem(
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow
-        )
+        ), label = ""
     )
 
     Box(
-        modifier = modifier.then(
-            Modifier
-                .graphicsLayer {
-                    translationX = animatedOffset.x
-                    translationY = animatedOffset.y
-                }
-                .pointerInput(Unit) {
-                    detectDragGestures(
-                        onDragEnd = { targetOffset = Offset.Zero },
-                        onDragCancel = { targetOffset = Offset.Zero },
-                        onDrag = { change, dragAmount ->
-                            targetOffset = targetOffset.plus(Offset(dragAmount.x, dragAmount.y))
-                        }
-                    )
-                }
-        ),
+        modifier = Modifier
+            .size(size)
+            .circularPosition(
+                radius = circleDistance,
+                angle = angle.toFloat()
+            )
+            .graphicsLayer {
+                translationX = animatedOffset.x
+                translationY = animatedOffset.y
+            }
+            .pointerInput(Unit) {
+                detectDragGestures(
+                    onDragEnd = { targetOffset = Offset.Zero },
+                    onDragCancel = { targetOffset = Offset.Zero },
+                    onDrag = { change, dragAmount ->
+                        targetOffset = targetOffset.plus(Offset(dragAmount.x, dragAmount.y))
+                    }
+                )
+            }
+        ,
         contentAlignment = Alignment.Center
     ) {
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .scale(1.08f)
-                .myShape("right", 0.825f, 0x1D000000)
-        )
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .scale(1.06f)
-                .myShape("right", 0.75f, 0x11D000000)
-        )
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .myShape("right", 0.8f, color),
+                .shadow(elevation = 12.dp, shape = CircleShape)
+                .clip(CircleShape)
+                //.background(color = Color(0x11D00000))
+                .background(color = Color(color))
+                .clickable { navigateToMainShared() },
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -185,11 +166,3 @@ private fun CircleItem(
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun bodyContentPreview() {
-    GlovoSimulationTheme {
-        centerBodyContent(centerCircleColor = 0xFFFFFFFF, outerCircleColor = 0xFFFFFFFF)
-    }
-}

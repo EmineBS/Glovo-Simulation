@@ -1,27 +1,21 @@
 package com.example.glovosimulation.ui.entryPoint.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,11 +29,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.glovosimulation.navigation.NavigationActions
+import com.example.glovosimulation.navigation.NavigationDestination
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 import com.example.glovosimulation.ui.theme.myShape
 
 @Composable
-fun EntryPointBody(modifier : Modifier = Modifier, NavigateToProfile:() -> Unit){
+fun EntryPointBody(navigationActions: NavigationActions, modifier : Modifier = Modifier){
     Column (horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
         .fillMaxSize()
@@ -49,7 +46,7 @@ fun EntryPointBody(modifier : Modifier = Modifier, NavigateToProfile:() -> Unit)
             Box(modifier = Modifier
                 .size(30.dp)
                 .myShape("right", 0.75f, 0xFFEEEEEE)
-                .clickable { NavigateToProfile() }) {
+                .clickable { navigationActions.navigateToProfile() }) {
                 Image(imageVector = Icons.Outlined.Person, contentDescription = "", modifier = Modifier.align(Alignment.Center).size(18.dp))
             }
             Card(modifier = Modifier.padding(start = 0.dp).size(250.dp,30.dp),
@@ -79,24 +76,9 @@ fun EntryPointBody(modifier : Modifier = Modifier, NavigateToProfile:() -> Unit)
             modifier = Modifier.padding(vertical = 16.dp))
     }
 
-    Box(
-        modifier = modifier.fillMaxSize().padding(bottom = 20.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        centerBodyContent(circleDistance = 120.dp,
-            centerCircleSize = 115.dp,
-            outerCircleSize = 100.dp,
-            centerCircleColor = 0xFFFFFFFF,
-            outerCircleColor = 0xFFFFFFFF)
+    CenterBodyContent() {
+        navigationActions.navigateToMainShared()
     }
 
     bottomScrollable()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    GlovoSimulationTheme {
-        EntryPointBody(NavigateToProfile = {})
-    }
 }

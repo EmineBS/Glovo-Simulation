@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.glovosimulation.navigation.NavigationActions
 import com.example.glovosimulation.navigation.NavigationDestination
+import com.example.glovosimulation.ui.commonScreens.mainShared.MainSharedActivity
 import com.example.glovosimulation.ui.entryPoint.EntryPointActivity
 import com.example.glovosimulation.ui.particularScreens.Profile.ProfileActivity
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
@@ -23,20 +24,17 @@ fun MainNavigation(
         modifier = modifier
     ) {
         composable(NavigationDestination.EntryPoint.route) {
-            GlovoSimulationTheme {
-                EntryPointActivity(){
-                    navigationActions.navigateToProfile()
-                }
-            }
+            EntryPointActivity(navigationActions = navigationActions)
         }
 
         composable(NavigationDestination.Profile.route) {
-            GlovoSimulationTheme {
-                ProfileActivity(){
-                    navigationActions.navigateToEntryPoint()
-                }
-            }
+            ProfileActivity(navigationActions = navigationActions)
         }
+
+        composable(NavigationDestination.MainShared.route) {
+            MainSharedActivity(navigationActions = navigationActions)
+        }
+
         // Other navigation destinations will go here
     }
 }

@@ -9,12 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import com.example.glovosimulation.navigation.NavigationActions
 import com.example.glovosimulation.ui.entryPoint.components.EntryPointBody
 import com.example.glovosimulation.ui.particularScreens.Profile.ProfileActivity
 import com.example.glovosimulation.ui.theme.GlovoSimulationTheme
 
 @Composable
-fun EntryPointActivity(navigateToProfile:() -> Unit) {
+fun EntryPointActivity(navigationActions : NavigationActions) {
     Scaffold(
         //topBar = { EntryPointTopBar() } ,
         content = { innerPadding ->
@@ -23,16 +25,8 @@ fun EntryPointActivity(navigateToProfile:() -> Unit) {
                     .padding(innerPadding)
                     .background(color = Color(0xFFFFB84D))
                     .fillMaxSize()) {
-                        EntryPointBody(NavigateToProfile = navigateToProfile)
+                        EntryPointBody(navigationActions = navigationActions)
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    GlovoSimulationTheme {
-        EntryPointActivity(navigateToProfile = {})
-    }
 }

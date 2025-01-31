@@ -22,4 +22,8 @@ class NavigationActions @Inject constructor() {
     fun navigateToProfile() {
         _navController?.navigate(NavigationDestination.Profile.route)
     }
+
+    fun navigateToMainShared() {
+        _navController?.navigate(NavigationDestination.MainShared.route)
+    }
 }
